@@ -3,9 +3,7 @@
 A stock [Caddy](https://caddyserver.com/) image extended with the
 [caddy-dns/ovh](https://github.com/caddy-dns/ovh) module, so Caddy can obtain
 and renew its TLS certificates through the ACME DNS-01 challenge using OVH's
-DNS API. This is the right setup when the host is not reachable from the
-internet, because DNS-01 proves domain control purely through DNS records and
-never needs an inbound connection.
+DNS API.
 
 The image is rebuilt from `caddy:builder`/`caddy:latest` on every push and
 weekly (to pick up new Caddy base images), smoke-tested for the presence of
@@ -14,11 +12,14 @@ the OVH module, and published as
 
 ## Usage
 
-The OVH credentials are passed through the environment; the module expects an
-application key/secret pair plus a consumer key with access to the zone's
-record and refresh paths (see [OVH's API documentation](https://help.ovhcloud.com/csm/en-api-getting-started-ovhcloud-api)
-or [ovh-subdomain-provision](../ovh-subdomain-provision/), which generates a zone-limited consumer
-key for exactly this purpose).
+The OVH credentials are passed through the environment variables: the module
+expects an application key/secret pair plus a consumer key allowed to edit
+the zone's DNS records — the API endpoints `/domain/zone/<zone>/record` and
+`/domain/zone/<zone>/refresh`. See
+[OVH's API documentation](https://help.ovhcloud.com/csm/en-api-getting-started-ovhcloud-api)
+on how to issue the keys, or use the
+[ovh-subdomain-provision](https://github.com/wrobelda/ovh-subdomain-provision)
+script to generate a whole set (zone + API keys) automatically.
 
 ```yaml
 # docker-compose.yml
