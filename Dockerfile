@@ -1,10 +1,14 @@
-FROM caddy:builder AS builder
+FROM --platform=$BUILDPLATFORM docker.io/library/caddy:builder AS builder
 
-RUN xcaddy build \
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH GOARM=${TARGETVARIANT#v} xcaddy build \
     --with github.com/caddy-dns/ovh \
  && go clean -modcache \
  && rm -rf /root/.cache/go-build
 
-FROM caddy:latest
+FROM docker.io/library/caddy:latest
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
