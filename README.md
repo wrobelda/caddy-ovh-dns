@@ -19,7 +19,7 @@ ghcr.io/wrobelda/caddy-ovh:latest
 The OVH credentials are passed through the environment; the module expects an
 application key/secret pair plus a consumer key with access to the zone's
 record and refresh paths (see [OVH's API documentation](https://help.ovhcloud.com/csm/en-api-getting-started-ovhcloud-api)
-or [ovh-provision](../ovh-provision/), which generates a zone-limited consumer
+or [ovh-subdomain-provision](../ovh-subdomain-provision/), which generates a zone-limited consumer
 key for exactly this purpose).
 
 ```yaml
