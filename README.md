@@ -8,11 +8,9 @@ internet, because DNS-01 proves domain control purely through DNS records and
 never needs an inbound connection.
 
 The image is rebuilt from `caddy:builder`/`caddy:latest` on every push and
-published as:
-
-```
-ghcr.io/wrobelda/caddy-ovh:latest
-```
+weekly (to pick up new Caddy base images), smoke-tested for the presence of
+the OVH module, and published as
+[`ghcr.io/wrobelda/caddy-ovh:latest`](https://github.com/wrobelda/caddy-ovh-dns/pkgs/container/caddy-ovh).
 
 ## Usage
 

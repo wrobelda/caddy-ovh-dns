@@ -3,6 +3,8 @@ name: Build and Publish Docker image
 on:
   push:
     branches: [ "master" ]
+  schedule:
+    - cron: "43 5 * * 2"   # weekly: pick up new caddy:latest base images
   workflow_dispatch:
 
 jobs:
@@ -21,8 +23,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          load: true
+          pull: true
+          tags: caddy-ovh:candidate
+
+      - name: Smoke test
+        run: |
+          docker run --rm caddy-ovh:candidate caddy version
+          docker run --rm caddy-ovh:candidate caddy list-modules | grep -q '^dns.providers.ovh$'
+
+      - name: Push
         uses: docker/build-push-action@v6
         with:
           push: true
+          pull: true
           tags: ghcr.io/${{ github.repository_owner }}/caddy-ovh:latest
